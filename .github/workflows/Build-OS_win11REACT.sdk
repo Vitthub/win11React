@@ -1,7 +1,8 @@
 name: Build & Deploy
-
-on:
-  push:
+Boot: launcher_default
+os:windows-latest
+  Run:npm install
+      npm run build --win11
     branches: [master]
 
   workflow_dispatch:
@@ -9,14 +10,15 @@ on:
 permissions:
   pages: write
   id-token: write
-
+  home: 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  Build-Deploy:
-    environment:
+  Build-Deploy: OS win_11_×32bit
+
+    environment: default_launcher
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
@@ -44,14 +46,15 @@ jobs:
           npm run crowdin upload
           npm run crowdin download
           npm run ghbuild
-        env:
+        env:OS
           api_token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
 
       - uses: actions/upload-pages-artifact@v1
-        with:
-          path: build
+        with:Boot loader
+
+          path: launcher
 
       - id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-launcher@v1
